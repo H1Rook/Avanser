@@ -1,0 +1,72 @@
+2024-08-13 23:34:19,288 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:34:19,289 INFO:Database connection closed.
+2024-08-13 23:34:19,300 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:34:19,300 INFO:Database connection closed.
+2024-08-13 23:34:19,311 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:34:19,311 INFO:Database connection closed.
+2024-08-13 23:34:19,321 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:34:19,321 INFO:Database connection closed.
+2024-08-13 23:36:58,345 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:36:58,345 INFO:Database connection closed.
+2024-08-13 23:36:58,356 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:36:58,356 INFO:Database connection closed.
+2024-08-13 23:36:58,366 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:36:58,366 INFO:Database connection closed.
+2024-08-13 23:36:58,377 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:36:58,377 INFO:Database connection closed.
+2024-08-13 23:37:19,049 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:37:19,049 INFO:Database connection closed.
+2024-08-13 23:37:21,840 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:37:21,841 INFO:Database connection closed.
+2024-08-13 23:37:58,012 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:37:58,012 INFO:Database connection closed.
+2024-08-13 23:38:04,812 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:38:04,812 INFO:Database connection closed.
+2024-08-13 23:41:14,196 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:41:14,196 INFO:Database connection closed.
+2024-08-13 23:41:14,207 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:41:14,207 INFO:Database connection closed.
+2024-08-13 23:41:14,217 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:41:14,217 INFO:Database connection closed.
+2024-08-13 23:41:14,228 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913206'
+2024-08-13 23:41:14,228 INFO:Database connection closed.
+2024-08-13 23:41:14,399 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'
+2024-08-13 23:41:14,399 INFO:Database connection closed.
+2024-08-13 23:41:14,410 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:41:14,411 INFO:Database connection closed.
+2024-08-13 23:41:14,578 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'
+2024-08-13 23:41:14,578 INFO:Database connection closed.
+2024-08-13 23:42:38,392 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:42:38,392 INFO:Database connection closed.
+2024-08-13 23:42:38,402 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:42:38,402 INFO:Database connection closed.
+2024-08-13 23:42:38,413 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:42:38,413 INFO:Database connection closed.
+2024-08-13 23:42:38,423 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913206'
+2024-08-13 23:42:38,424 INFO:Database connection closed.
+2024-08-13 23:42:38,594 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'
+2024-08-13 23:42:38,594 INFO:Database connection closed.
+2024-08-13 23:42:38,604 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:42:38,604 INFO:Database connection closed.
+2024-08-13 23:42:38,771 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'
+2024-08-13 23:42:38,771 INFO:Database connection closed.
+2024-08-13 23:45:39,217 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
+2024-08-13 23:45:50,091 INFO:Database connection closed.
+2024-08-13 23:45:52,822 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913200'
+2024-08-13 23:46:12,196 INFO:Database connection closed.
+2024-08-13 23:46:13,788 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913200'
+2024-08-13 23:46:15,028 INFO:Database connection closed.
+2024-08-13 23:46:18,514 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'
+2024-08-13 23:46:19,743 INFO:Database connection closed.
+2024-08-13 23:46:20,950 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'
+2024-08-13 23:46:21,999 INFO:Database connection closed.
+2024-08-13 23:46:23,045 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
+2024-08-13 23:46:24,156 INFO:Database connection closed.
+2024-08-13 23:46:25,297 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913204'
+2024-08-13 23:46:26,406 INFO:Database connection closed.
+2024-08-13 23:48:35,697 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'
+2024-08-13 23:48:35,698 INFO:Database connection closed.
+2024-08-13 23:49:33,673 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'
+2024-08-13 23:49:33,673 INFO:Database connection closed.
+2024-08-13 23:51:33,813 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'
+2024-08-13 23:51:33,813 INFO:Database connection closed.
