@@ -5,8 +5,14 @@ class ArchiveCdr:
 
     # Static list of tables and associated tables
     _tables = {
-        "cdr": {"id_field": "query"},
-        "cdr_sms": {"id_field": "query"},
+        "cdr": {
+            "id_field": "cd_id",
+            "query": "None"
+        },
+        "cdr_sms": {
+            "id_field": "cs_id",
+            "query": "None"
+        },
     }
 
     _associated_tables = {
@@ -85,7 +91,7 @@ class ArchiveCdr:
         if table_name not in self._tables:
             return False
 
-        self._tables[table_name]['id_field'] = query
+        self._tables[table_name]['query'] = query
         return True
 
     def archive(self):

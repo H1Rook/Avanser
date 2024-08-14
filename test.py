@@ -40,61 +40,59 @@ def update_dnis_flush(connection, dnis):
     # central_db_conn = get_db_connection('central')
 
 
+print('INFO', 'Script started')
 connection = get_connection()
+print("INFO", 'Connected to MySQL database')
+# Get a list of DNIS numbers that need to be flushed [start]
+sql = "SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'"
 
-update_dnis_flush(connection, '+61-0291913203')
+numbers = execute_query(connection, sql)
 
-# print('INFO', 'Script started')
-# connection = get_connection()
-# print("INFO", 'Connected to MySQL database')
-# # Get a list of DNIS numbers that need to be flushed [start]
-# sql = "SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'"
-#
-# numbers = execute_query(connection, sql)
-#
-# if not numbers:
-#     print('INFO', 'No DNIS records need to be flushed.')
-#     connection.close()
-#
-#
-# count_numbers = len(numbers)
-# print('INFO', f"{count_numbers} DNIS records found that need to be flushed.")
-# # Get a list of DNIS numbers that need to be flushed [stop]
-#
-# # Initialise the archiver class. Terminate the script if it throws an error.
-# try:
-#     archiver = ArchiveCdr()
-# except Exception as e:
-#     print('ERROR', e)
-#
-# # Loop through each number and archive all of the associated CDR records [start]
-# record_count = 0
-# for number in numbers:
-#     dnis = number['number']
-#     print("INFO", f"Processing number: {dnis}")
-#
-#     # Get the BNUM associated with this DNIS from the inbound table [start]
-#     sql = f"SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '{dnis}'"
-#     bnum = execute_query(connection, sql)
-#     if not bnum:
-#         print('INFO', [dnis, 'No BNUM found for DNIS'])
-#         update_dnis_flush(connection, dnis)  # Prevent re-trying this record every time the script runs
-#         continue
-#         # There should only be one record for each DNIS, so just extract the BNUM from the "first" record.
-#
-#     bnum = bnum[0]['bnum']
-#
-#     table_queries = {
-#         'cdr': f"`cd_bnum` = '{bnum}' OR (`cd_clientId` = 5000 AND `cd_dnis` = '{dnis}')",
-#         'cdr_sms': f"`cs_from` = '{bnum}' OR `cs_to` = '{bnum}'"
-#     }
-#
-#     for table_name, query in table_queries.items():
-#         if not archiver.set_table_query(table_name, query):
-#             print('ERR', f"Table not configured to be archived: {table_name}")
-#
+if not numbers:
+    print('INFO', 'No DNIS records need to be flushed.')
+    connection.close()
+
+
+count_numbers = len(numbers)
+print('INFO', f"{count_numbers} DNIS records found that need to be flushed.")
+# Get a list of DNIS numbers that need to be flushed [stop]
+
+# Initialise the archiver class. Terminate the script if it throws an error.
+try:
+    archiver = ArchiveCdr()
+except Exception as e:
+    print('ERROR', e)
+
+# Loop through each number and archive all of the associated CDR records [start]
+record_count = 0
+for number in numbers:
+    dnis = number['number']
+    print("INFO", f"Processing number: {dnis}")
+
+    # Get the BNUM associated with this DNIS from the inbound table [start]
+    sql = f"SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '{dnis}'"
+    bnum = execute_query(connection, sql)
+    if not bnum:
+        print('INFO', [dnis, 'No BNUM found for DNIS'])
+        update_dnis_flush(connection, dnis)  # Prevent re-trying this record every time the script runs
+        continue
+        # There should only be one record for each DNIS, so just extract the BNUM from the "first" record.
+
+    bnum = bnum[0]['bnum']
+
+    table_queries = {
+        'cdr': f"`cd_bnum` = '{bnum}' OR (`cd_clientId` = 5000 AND `cd_dnis` = '{dnis}')",
+        'cdr_sms': f"`cs_from` = '{bnum}' OR `cs_to` = '{bnum}'"
+    }
+
+    for table_name, query in table_queries.items():
+        if not archiver.set_table_query(table_name, query):
+            print('ERR', f"Table not configured to be archived: {table_name}")
+
+    print(archiver._tables)
+
 #     # Run the archiver process using the query conditions assigned above.
-#     records_archived = False
+#     records_archived = archiver.archive()
 #     if not records_archived:
 #         print('ERR', [dnis, bnum, 'Unable to archive records'])
 #         # If the archiver failed, log a message and skip to the next number.
@@ -104,8 +102,9 @@ update_dnis_flush(connection, '+61-0291913203')
 #     update_dnis_flush(connection, dnis)
 #
 #     # If this number exists in the inventory_recycle table, set the archive_completed flag.
-#     # update_inventory_recycle(connection, dnis)
-# update_dnis_flush(connection, '+61-0291913204')
+#     #update_inventory_recycle(connection, dnis)
 # print('INFO', f"{record_count} records archived across {count_numbers} numbers.")
 # connection.close()
-#
+
+# archiver = ArchiveCdr()
+

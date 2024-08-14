@@ -9,8 +9,8 @@ def log_message(level, message):
     :param level: The log level ('INFO' or 'ERROR').
     :param message: The message to log.
     """
-    logging.basicConfig(filename='F:\\pythonProject\\Avanser\\archive_cdr.log', level=logging.INFO,
-                        format='%(asctime)s %(levelname)s:%(message)s')
+    # logging.basicConfig(filename='F:\\pythonProject\\Avanser\\archive_cdr.log', level=logging.INFO,
+    #                     format='%(asctime)s %(levelname)s:%(message)s')
     if level == 'INFO':
         logging.info(message)
     elif level == 'ERROR':
