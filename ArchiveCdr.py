@@ -1,3 +1,9 @@
+import sqlite3
+import datetime
+
+from common import get_connection, execute_query, get_history_connection
+
+
 class ArchiveCdr:
     """
     Class to handle archiving of CDR records and associated tables.
@@ -124,16 +130,18 @@ class ArchiveCdr:
         :param is_associated_table: Boolean indicating if the table is an associated table
         :return: Boolean indicating success or failure
         """
+        # Check if the structure of this table needs to be updated [start]
         if table_name not in self._structure_updated:
-            if not self._update_structure(table_name):
-                return False
+            # if not self._update_structure(table_name):
+            #     return False
             self._structure_updated.append(table_name)
 
         while True:
-            records = self._query_local_db(f"SELECT * FROM {table_name} WHERE {where_condition} LIMIT 0, {self._query_limit}")
+            sql = f"SELECT * FROM {table_name} WHERE {where_condition} LIMIT 0, {self._query_limit}"
+            records = self._query_local_db(sql)
 
-            if records is False:
-                print(f"Error retrieving records from table: {table_name}")
+            if records is None:
+                print(f"Error retrieving records from table: {table_name}- Possible condition error.")
                 return False
 
             number_records = len(records)
@@ -159,10 +167,11 @@ class ArchiveCdr:
         :return: Boolean indicating success or failure
         """
         sql = self._generate_insert_query(record, table_name)
+
         if not self._query_history_db(sql):
             print(f"Unable to insert record into table: {table_name} (ID: {record[id_field]})")
             return False
-
+    # Process any "associated tables" for the given table [start]
         if table_name in self._associated_tables:
             for assoc_table_name, table_details in self._associated_tables[table_name].items():
                 link_value = self._database_quote(record[table_details['link_field_other']])
@@ -237,7 +246,8 @@ class ArchiveCdr:
                     break
 
             if action != 'skip':
-                structure_changes.append(self._generate_structure_change_statement(local_field, action, table_exists, previous_field))
+                structure_changes.append(
+                    self._generate_structure_change_statement(local_field, action, table_exists, previous_field))
 
             previous_field = local_field['Field']
 
@@ -245,17 +255,50 @@ class ArchiveCdr:
 
     # Placeholder methods for database interactions (to be implemented as needed)
     def _query_local_db(self, sql):
-        pass
+        connection = get_connection()
+        return execute_query(connection, sql)
 
     def _query_history_db(self, sql):
-        pass
+        history_connection = get_history_connection()
+        return execute_query(history_connection, sql)
 
     def _generate_insert_query(self, record, table_name):
-        pass
+
+        fields = ','.join(f"`{field}`" for field in record.keys())
+        values = ','.join(
+            'NULL' if value is None else f"'{value}'" if isinstance(value,
+                                                                    (str, datetime.date, datetime.datetime)) else str(
+                value)
+            for value in record.values()
+        )
+
+        return f"INSERT INTO `{table_name}` ({fields}) VALUES({values})"
 
     def _database_quote(self, value):
-        pass
+        """
+    Escapes and quotes the input value for safe use in SQL queries.
+
+    :param value: The value to be quoted and escaped.
+    :return: The safely quoted and escaped value.
+    """
+        if value is None:
+            return 'NULL'
+
+        if isinstance(value, (int, float)):
+            # If it's a number, return as is (no quotes)
+            return str(value)
+
+        # Escape special characters in strings (e.g., quotes)
+        if isinstance(value, str):
+            value = value.replace("\\", "\\\\")  # Escape backslashes
+            value = value.replace("'", "\\'")    # Escape single quotes
+            value = value.replace('"', '\\"')    # Escape double quotes
+
+            # Wrap the value in single quotes for SQL
+            return f"'{value}'"
+
+        # If it's another type, convert it to string and quote
+        return f"'{str(value)}'"
 
     def _generate_structure_change_statement(self, field_data, action, table_exists, previous_field):
         pass
-

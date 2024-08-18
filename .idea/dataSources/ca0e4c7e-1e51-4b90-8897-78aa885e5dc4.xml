@@ -787,7 +787,7 @@ sys|schema||mysql.sys|localhost|TRIGGER|G</Grants>
       <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="227" parent="1" name="edb">
-      <LastIntrospectionLocalTimestamp>2024-08-12.05:46:17</LastIntrospectionLocalTimestamp>
+      <LastIntrospectionLocalTimestamp>2024-08-15.10:39:17</LastIntrospectionLocalTimestamp>
       <CollationName>latin1_swedish_ci</CollationName>
     </schema>
     <schema id="228" parent="1" name="envox">

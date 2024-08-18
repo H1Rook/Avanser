@@ -19,7 +19,6 @@ from common import execute_query, get_connection, log_message
 
 import pymysql
 
-# 56134 5 4
 # Configuration and database connection setup
 CONF = {
     'path': '/avanser/',
@@ -99,6 +98,7 @@ def main():
         update_inventory_recycle(connection, dnis)
 
     log_message('INFO', f"{record_count} records archived across {count_numbers} numbers.")
+    # Loop through each number and archive all of the associated CDR records [stop]
     connection.close()
 
 
@@ -125,12 +125,12 @@ def update_dnis_flush(connection, dnis):
     """Update the DNIS record to disable the flushCdr flag."""
 
     sql = f"update dnis set dn_flushCdr = 'N' where dn_number = '{dnis}'"
-    print('INF', f"Executing SQL: {sql}")
+    log_message('INF', f"Executing SQL: {sql}")
     update = execute_query(connection, sql)
     if not update:
-        print('ERR', f"Failed to update flushCdr for DNIS: {dnis}")
+        log_message('ERR', f"Failed to update flushCdr for DNIS: {dnis}")
     else:
-        print('INFO', f"Updated flushCdr for DNIS: {dnis}")
+        log_message('INFO', f"Updated flushCdr for DNIS: {dnis}")
 
 
 
