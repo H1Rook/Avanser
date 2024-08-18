@@ -1,0 +1,183 @@
+Index: test.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>import sys\r\nimport re\r\nimport logging\r\nfrom contextlib import closing\r\nfrom common import get_connection, execute_query, log_message\r\nfrom ArchiveCdr import ArchiveCdr\r\n\r\n# Configuration and database connection setup\r\nCONF = {\r\n    'path': '/avanser/',\r\n    'node': 'edb1'\r\n}\r\n\r\n# Determine environment based on node\r\nenvironment = 'test'\r\n\r\n\r\n#'+61-1300989659'\r\n\r\n\r\n#\r\n# if CONF['node'] in ['webdev', 'devsql', 'edb2'] or re.search(r'sandbox|devcs', CONF['node']):\r\n#     environment = 'test'\r\ndef update_dnis_flush(connection, dnis):\r\n    \"\"\"Update the DNIS record to disable the flushCdr flag.\"\"\"\r\n    sql = f\"update dnis set dn_flushCdr = 'N' where dn_number = '{dnis}'\"\r\n    print('INF', f\"Executing SQL: {sql}\")\r\n\r\n    update = execute_query(connection, sql)\r\n\r\n    if not update:\r\n        print('ERR', f\"Failed to update flushCdr for DNIS: {dnis}\")\r\n    else:\r\n        print('INFO', f\"Updated flushCdr for DNIS: {dnis}\")\r\n\r\n    \"\"\"\r\n    Main function to archive CDR based on the flush flag into local DNIS table.\r\n    \"\"\"\r\n    # Establish connections to local and central databases\r\n    # central_db_conn = get_db_connection('central')\r\n\r\n\r\nconnection = get_connection()\r\n\r\nupdate_dnis_flush(connection, '+61-0291913203')\r\n\r\n# print('INFO', 'Script started')\r\n# connection = get_connection()\r\n# print(\"INFO\", 'Connected to MySQL database')\r\n# # Get a list of DNIS numbers that need to be flushed [start]\r\n# sql = \"SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\"\r\n#\r\n# numbers = execute_query(connection, sql)\r\n#\r\n# if not numbers:\r\n#     print('INFO', 'No DNIS records need to be flushed.')\r\n#     connection.close()\r\n#\r\n#\r\n# count_numbers = len(numbers)\r\n# print('INFO', f\"{count_numbers} DNIS records found that need to be flushed.\")\r\n# # Get a list of DNIS numbers that need to be flushed [stop]\r\n#\r\n# # Initialise the archiver class. Terminate the script if it throws an error.\r\n# try:\r\n#     archiver = ArchiveCdr()\r\n# except Exception as e:\r\n#     print('ERROR', e)\r\n#\r\n# # Loop through each number and archive all of the associated CDR records [start]\r\n# record_count = 0\r\n# for number in numbers:\r\n#     dnis = number['number']\r\n#     print(\"INFO\", f\"Processing number: {dnis}\")\r\n#\r\n#     # Get the BNUM associated with this DNIS from the inbound table [start]\r\n#     sql = f\"SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '{dnis}'\"\r\n#     bnum = execute_query(connection, sql)\r\n#     if not bnum:\r\n#         print('INFO', [dnis, 'No BNUM found for DNIS'])\r\n#         update_dnis_flush(connection, dnis)  # Prevent re-trying this record every time the script runs\r\n#         continue\r\n#         # There should only be one record for each DNIS, so just extract the BNUM from the \"first\" record.\r\n#\r\n#     bnum = bnum[0]['bnum']\r\n#\r\n#     table_queries = {\r\n#         'cdr': f\"`cd_bnum` = '{bnum}' OR (`cd_clientId` = 5000 AND `cd_dnis` = '{dnis}')\",\r\n#         'cdr_sms': f\"`cs_from` = '{bnum}' OR `cs_to` = '{bnum}'\"\r\n#     }\r\n#\r\n#     for table_name, query in table_queries.items():\r\n#         if not archiver.set_table_query(table_name, query):\r\n#             print('ERR', f\"Table not configured to be archived: {table_name}\")\r\n#\r\n#     # Run the archiver process using the query conditions assigned above.\r\n#     records_archived = False\r\n#     if not records_archived:\r\n#         print('ERR', [dnis, bnum, 'Unable to archive records'])\r\n#         # If the archiver failed, log a message and skip to the next number.\r\n#         continue\r\n#     # Update the DNIS record for this number to disable the flushCdr flag.\r\n#     record_count += records_archived\r\n#     update_dnis_flush(connection, dnis)\r\n#\r\n#     # If this number exists in the inventory_recycle table, set the archive_completed flag.\r\n#     # update_inventory_recycle(connection, dnis)\r\n# update_dnis_flush(connection, '+61-0291913204')\r\n# print('INFO', f\"{record_count} records archived across {count_numbers} numbers.\")\r\n# connection.close()\r\n#\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/test.py b/test.py
+--- a/test.py	(revision 9da1cb528efa9fbb758dcd57e1e461a3a0381a60)
++++ b/test.py	(date 1723617996579)
+@@ -41,9 +41,9 @@
+ 
+ 
+ connection = get_connection()
+-
+-update_dnis_flush(connection, '+61-0291913203')
+-
++sql = 'select * from cdr cd_bnum = '+64-0800480473''
++# update_dnis_flush(connection, '+61-0291913203')
++#
+ # print('INFO', 'Script started')
+ # connection = get_connection()
+ # print("INFO", 'Connected to MySQL database')
+Index: .idea/dataSources.local.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"dataSourceStorageLocal\" created-in=\"PY-241.14494.241\">\r\n    <data-source name=\"@localhost\" uuid=\"d6647161-d165-4707-9ac2-2bb734088435\">\r\n      <database-info product=\"MySQL\" version=\"8.0.34\" jdbc-version=\"4.2\" driver-name=\"MySQL Connector/J\" driver-version=\"mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)\" dbms=\"MYSQL\" exact-version=\"8.0.34\" exact-driver-version=\"8.2\">\r\n        <extra-name-characters>#@</extra-name-characters>\r\n        <identifier-quote-string>`</identifier-quote-string>\r\n        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>\r\n      </database-info>\r\n      <case-sensitivity plain-identifiers=\"lower\" quoted-identifiers=\"lower\" />\r\n      <secret-storage>master_key</secret-storage>\r\n      <user-name>root</user-name>\r\n      <schema-mapping>\r\n        <introspection-scope>\r\n          <node kind=\"schema\">\r\n            <name qname=\"@\" />\r\n            <name qname=\"edb\" />\r\n          </node>\r\n        </introspection-scope>\r\n      </schema-mapping>\r\n    </data-source>\r\n    <data-source name=\"@192.168.110.26\" uuid=\"ca0e4c7e-1e51-4b90-8897-78aa885e5dc4\">\r\n      <database-info product=\"MySQL\" version=\"5.7.42\" jdbc-version=\"4.2\" driver-name=\"MySQL Connector/J\" driver-version=\"mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)\" dbms=\"MYSQL\" exact-version=\"5.7.42\" exact-driver-version=\"8.2\">\r\n        <extra-name-characters>#@</extra-name-characters>\r\n        <identifier-quote-string>`</identifier-quote-string>\r\n        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>\r\n      </database-info>\r\n      <case-sensitivity plain-identifiers=\"exact\" quoted-identifiers=\"exact\" />\r\n      <secret-storage>master_key</secret-storage>\r\n      <user-name>readonly_user</user-name>\r\n      <schema-mapping>\r\n        <introspection-scope>\r\n          <node kind=\"schema\">\r\n            <name qname=\"@\" />\r\n            <name qname=\"central\" />\r\n            <name qname=\"edb\" />\r\n          </node>\r\n        </introspection-scope>\r\n      </schema-mapping>\r\n    </data-source>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/dataSources.local.xml b/.idea/dataSources.local.xml
+--- a/.idea/dataSources.local.xml	(revision 9da1cb528efa9fbb758dcd57e1e461a3a0381a60)
++++ b/.idea/dataSources.local.xml	(date 1723617628611)
+@@ -23,7 +23,6 @@
+       <database-info product="MySQL" version="5.7.42" jdbc-version="4.2" driver-name="MySQL Connector/J" driver-version="mysql-connector-j-8.2.0 (Revision: 06a1f724497fd81c6a659131fda822c9e5085b6c)" dbms="MYSQL" exact-version="5.7.42" exact-driver-version="8.2">
+         <extra-name-characters>#@</extra-name-characters>
+         <identifier-quote-string>`</identifier-quote-string>
+-        <jdbc-catalog-is-schema>true</jdbc-catalog-is-schema>
+       </database-info>
+       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
+       <secret-storage>master_key</secret-storage>
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"cedc0094-cd79-4b70-b7b3-f4544ca153e8\" name=\"Changes\" comment=\"TODO:&#10;archive\" />\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"FileTemplateManagerImpl\">\r\n    <option name=\"RECENT_TEMPLATES\">\r\n      <list>\r\n        <option value=\"Python Script\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"PREVIOUS_COMMIT_AUTHORS\">\r\n      <list>\r\n        <option value=\"H1Rook &lt;hiitsrook@gmail.com&gt;\" />\r\n      </list>\r\n    </option>\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"ProjectColorInfo\">{\r\n  &quot;associatedIndex&quot;: 3\r\n}</component>\r\n  <component name=\"ProjectId\" id=\"2kMhwPGTmkeHzPufaZoSJnD9wzB\" />\r\n  <component name=\"ProjectLevelVcsManager\" settingsEditedManually=\"true\" />\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"Python.ArchiveCdr.executor\": \"Run\",\r\n    \"Python.common.executor\": \"Run\",\r\n    \"Python.test.executor\": \"Run\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"database.data.extractors.current.export.id\": \"Comma-separated (CSV)_id\",\r\n    \"git-widget-placeholder\": \"master\",\r\n    \"ignore.virus.scanning.warn.message\": \"true\",\r\n    \"last_opened_file_path\": \"C:/Users/manya/Downloads/db_txt.txt\",\r\n    \"node.js.detected.package.eslint\": \"true\",\r\n    \"node.js.detected.package.tslint\": \"true\",\r\n    \"node.js.selected.package.eslint\": \"(autodetect)\",\r\n    \"node.js.selected.package.tslint\": \"(autodetect)\",\r\n    \"nodejs_package_manager_path\": \"npm\",\r\n    \"vue.rearranger.settings.migration\": \"true\"\r\n  },\r\n  \"keyToStringList\": {\r\n    \"DatabaseDriversLRU\": [\r\n      \"mysql\"\r\n    ]\r\n  }\r\n}]]></component>\r\n  <component name=\"RecentsManager\">\r\n    <key name=\"CopyFile.RECENT_KEYS\">\r\n      <recent name=\"C:\\Users\\alex.huang\\Desktop\\Archive\" />\r\n    </key>\r\n  </component>\r\n  <component name=\"SharedIndexes\">\r\n    <attachedChunks>\r\n      <set>\r\n        <option value=\"bundled-js-predefined-1d06a55b98c1-74d2a5396914-JavaScript-PY-241.14494.241\" />\r\n        <option value=\"bundled-python-sdk-0509580d9d50-28c9f5db9ffe-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.14494.241\" />\r\n      </set>\r\n    </attachedChunks>\r\n  </component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"cedc0094-cd79-4b70-b7b3-f4544ca153e8\" name=\"Changes\" comment=\"\" />\r\n      <created>1723099591335</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1723099591335</updated>\r\n      <workItem from=\"1723099592487\" duration=\"3000\" />\r\n      <workItem from=\"1723099601349\" duration=\"611000\" />\r\n      <workItem from=\"1723120813260\" duration=\"19000\" />\r\n      <workItem from=\"1723120833945\" duration=\"2079000\" />\r\n      <workItem from=\"1723438559809\" duration=\"49000\" />\r\n      <workItem from=\"1723438616008\" duration=\"2364000\" />\r\n      <workItem from=\"1723445606135\" duration=\"4375000\" />\r\n      <workItem from=\"1723523343639\" duration=\"2687000\" />\r\n      <workItem from=\"1723537548440\" duration=\"12058000\" />\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"TODO:&#10;archive\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1723557205575</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1723557205575</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"TODO:&#10;archive\">\r\n      <option name=\"closed\" value=\"true\" />\r\n      <created>1723557775549</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1723557775549</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"3\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"TypeScriptGeneratedFilesManager\">\r\n    <option name=\"version\" value=\"3\" />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"RECENT_FILTERS\">\r\n      <map>\r\n        <entry key=\"Branch\">\r\n          <value>\r\n            <list>\r\n              <RecentGroup>\r\n                <option name=\"FILTER_VALUES\">\r\n                  <option value=\"origin/master\" />\r\n                </option>\r\n              </RecentGroup>\r\n              <RecentGroup>\r\n                <option name=\"FILTER_VALUES\">\r\n                  <option value=\"master\" />\r\n                </option>\r\n              </RecentGroup>\r\n            </list>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"origin/master\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <MESSAGE value=\"first commit\" />\r\n    <MESSAGE value=\"TODO:&#10;archive\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"TODO:&#10;archive\" />\r\n  </component>\r\n  <component name=\"XDebuggerManager\">\r\n    <breakpoint-manager>\r\n      <breakpoints>\r\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\r\n          <url>file://$PROJECT_DIR$/common.py</url>\r\n          <line>37</line>\r\n          <option name=\"timeStamp\" value=\"6\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\r\n          <url>file://$PROJECT_DIR$/common.py</url>\r\n          <line>38</line>\r\n          <option name=\"timeStamp\" value=\"7\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\r\n          <url>file://$PROJECT_DIR$/common.py</url>\r\n          <line>46</line>\r\n          <option name=\"timeStamp\" value=\"8\" />\r\n        </line-breakpoint>\r\n        <line-breakpoint enabled=\"true\" suspend=\"THREAD\" type=\"python-line\">\r\n          <url>file://$PROJECT_DIR$/common.py</url>\r\n          <line>44</line>\r\n          <option name=\"timeStamp\" value=\"9\" />\r\n        </line-breakpoint>\r\n      </breakpoints>\r\n    </breakpoint-manager>\r\n  </component>\r\n  <component name=\"com.intellij.coverage.CoverageDataManagerImpl\">\r\n    <SUITE FILE_PATH=\"coverage/Avanser$common.coverage\" NAME=\"common Coverage Results\" MODIFIED=\"1723449899046\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Avanser$ArchiveCdr.coverage\" NAME=\"ArchiveCdr Coverage Results\" MODIFIED=\"1723545780077\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n    <SUITE FILE_PATH=\"coverage/Avanser$test.coverage\" NAME=\"test Coverage Results\" MODIFIED=\"1723557093554\" SOURCE_PROVIDER=\"com.intellij.coverage.DefaultCoverageFileProvider\" RUNNER=\"coverage.py\" COVERAGE_BY_TEST_ENABLED=\"false\" COVERAGE_TRACING_ENABLED=\"false\" WORKING_DIRECTORY=\"$PROJECT_DIR$\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 9da1cb528efa9fbb758dcd57e1e461a3a0381a60)
++++ b/.idea/workspace.xml	(date 1723618641599)
+@@ -4,7 +4,12 @@
+     <option name="autoReloadType" value="SELECTIVE" />
+   </component>
+   <component name="ChangeListManager">
+-    <list default="true" id="cedc0094-cd79-4b70-b7b3-f4544ca153e8" name="Changes" comment="TODO:&#10;archive" />
++    <list default="true" id="cedc0094-cd79-4b70-b7b3-f4544ca153e8" name="Changes" comment="TODO:&#10;archive">
++      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/archive_cdr.log" beforeDir="false" afterPath="$PROJECT_DIR$/archive_cdr.log" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
++    </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+@@ -34,30 +39,30 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "Python.ArchiveCdr.executor": "Run",
+-    "Python.common.executor": "Run",
+-    "Python.test.executor": "Run",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "database.data.extractors.current.export.id": "Comma-separated (CSV)_id",
+-    "git-widget-placeholder": "master",
+-    "ignore.virus.scanning.warn.message": "true",
+-    "last_opened_file_path": "C:/Users/manya/Downloads/db_txt.txt",
+-    "node.js.detected.package.eslint": "true",
+-    "node.js.detected.package.tslint": "true",
+-    "node.js.selected.package.eslint": "(autodetect)",
+-    "node.js.selected.package.tslint": "(autodetect)",
+-    "nodejs_package_manager_path": "npm",
+-    "vue.rearranger.settings.migration": "true"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Python.ArchiveCdr.executor&quot;: &quot;Run&quot;,
++    &quot;Python.common.executor&quot;: &quot;Run&quot;,
++    &quot;Python.test.executor&quot;: &quot;Run&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;database.data.extractors.current.export.id&quot;: &quot;Comma-separated (CSV)_id&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
++    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/Users/manya/Downloads/db_txt.txt&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+   },
+-  "keyToStringList": {
+-    "DatabaseDriversLRU": [
+-      "mysql"
++  &quot;keyToStringList&quot;: {
++    &quot;DatabaseDriversLRU&quot;: [
++      &quot;mysql&quot;
+     ]
+   }
+-}]]></component>
++}</component>
+   <component name="RecentsManager">
+     <key name="CopyFile.RECENT_KEYS">
+       <recent name="C:\Users\alex.huang\Desktop\Archive" />
+@@ -87,7 +92,8 @@
+       <workItem from="1723438616008" duration="2364000" />
+       <workItem from="1723445606135" duration="4375000" />
+       <workItem from="1723523343639" duration="2687000" />
+-      <workItem from="1723537548440" duration="12058000" />
++      <workItem from="1723537548440" duration="12356000" />
++      <workItem from="1723616244693" duration="1985000" />
+     </task>
+     <task id="LOCAL-00001" summary="TODO:&#10;archive">
+       <option name="closed" value="true" />
+@@ -105,7 +111,15 @@
+       <option name="project" value="LOCAL" />
+       <updated>1723557775549</updated>
+     </task>
+-    <option name="localTasksCounter" value="3" />
++    <task id="LOCAL-00003" summary="TODO:&#10;archive">
++      <option name="closed" value="true" />
++      <created>1723558839255</created>
++      <option name="number" value="00003" />
++      <option name="presentableId" value="LOCAL-00003" />
++      <option name="project" value="LOCAL" />
++      <updated>1723558839255</updated>
++    </task>
++    <option name="localTasksCounter" value="4" />
+     <servers />
+   </component>
+   <component name="TypeScriptGeneratedFilesManager">
+@@ -188,6 +202,6 @@
+   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+     <SUITE FILE_PATH="coverage/Avanser$common.coverage" NAME="common Coverage Results" MODIFIED="1723449899046" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+     <SUITE FILE_PATH="coverage/Avanser$ArchiveCdr.coverage" NAME="ArchiveCdr Coverage Results" MODIFIED="1723545780077" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+-    <SUITE FILE_PATH="coverage/Avanser$test.coverage" NAME="test Coverage Results" MODIFIED="1723557093554" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
++    <SUITE FILE_PATH="coverage/Avanser$test.coverage" NAME="test Coverage Results" MODIFIED="1723617776279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+   </component>
+ </project>
+\ No newline at end of file
+Index: archive_cdr.log
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>2024-08-13 23:34:19,288 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:34:19,289 INFO:Database connection closed.\r\n2024-08-13 23:34:19,300 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:34:19,300 INFO:Database connection closed.\r\n2024-08-13 23:34:19,311 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:34:19,311 INFO:Database connection closed.\r\n2024-08-13 23:34:19,321 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:34:19,321 INFO:Database connection closed.\r\n2024-08-13 23:36:58,345 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:36:58,345 INFO:Database connection closed.\r\n2024-08-13 23:36:58,356 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:36:58,356 INFO:Database connection closed.\r\n2024-08-13 23:36:58,366 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:36:58,366 INFO:Database connection closed.\r\n2024-08-13 23:36:58,377 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:36:58,377 INFO:Database connection closed.\r\n2024-08-13 23:37:19,049 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:37:19,049 INFO:Database connection closed.\r\n2024-08-13 23:37:21,840 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:37:21,841 INFO:Database connection closed.\r\n2024-08-13 23:37:58,012 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:37:58,012 INFO:Database connection closed.\r\n2024-08-13 23:38:04,812 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:38:04,812 INFO:Database connection closed.\r\n2024-08-13 23:41:14,196 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:41:14,196 INFO:Database connection closed.\r\n2024-08-13 23:41:14,207 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:41:14,207 INFO:Database connection closed.\r\n2024-08-13 23:41:14,217 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:41:14,217 INFO:Database connection closed.\r\n2024-08-13 23:41:14,228 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913206'\r\n2024-08-13 23:41:14,228 INFO:Database connection closed.\r\n2024-08-13 23:41:14,399 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'\r\n2024-08-13 23:41:14,399 INFO:Database connection closed.\r\n2024-08-13 23:41:14,410 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:41:14,411 INFO:Database connection closed.\r\n2024-08-13 23:41:14,578 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'\r\n2024-08-13 23:41:14,578 INFO:Database connection closed.\r\n2024-08-13 23:42:38,392 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:42:38,392 INFO:Database connection closed.\r\n2024-08-13 23:42:38,402 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:42:38,402 INFO:Database connection closed.\r\n2024-08-13 23:42:38,413 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:42:38,413 INFO:Database connection closed.\r\n2024-08-13 23:42:38,423 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913206'\r\n2024-08-13 23:42:38,424 INFO:Database connection closed.\r\n2024-08-13 23:42:38,594 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'\r\n2024-08-13 23:42:38,594 INFO:Database connection closed.\r\n2024-08-13 23:42:38,604 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:42:38,604 INFO:Database connection closed.\r\n2024-08-13 23:42:38,771 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913206'\r\n2024-08-13 23:42:38,771 INFO:Database connection closed.\r\n2024-08-13 23:45:39,217 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'\r\n2024-08-13 23:45:50,091 INFO:Database connection closed.\r\n2024-08-13 23:45:52,822 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913200'\r\n2024-08-13 23:46:12,196 INFO:Database connection closed.\r\n2024-08-13 23:46:13,788 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913200'\r\n2024-08-13 23:46:15,028 INFO:Database connection closed.\r\n2024-08-13 23:46:18,514 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913203'\r\n2024-08-13 23:46:19,743 INFO:Database connection closed.\r\n2024-08-13 23:46:20,950 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913204'\r\n2024-08-13 23:46:21,999 INFO:Database connection closed.\r\n2024-08-13 23:46:23,045 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'\r\n2024-08-13 23:46:24,156 INFO:Database connection closed.\r\n2024-08-13 23:46:25,297 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913204'\r\n2024-08-13 23:46:26,406 INFO:Database connection closed.\r\n2024-08-13 23:48:35,697 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'\r\n2024-08-13 23:48:35,698 INFO:Database connection closed.\r\n2024-08-13 23:49:33,673 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'\r\n2024-08-13 23:49:33,673 INFO:Database connection closed.\r\n2024-08-13 23:51:33,813 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'\r\n2024-08-13 23:51:33,813 INFO:Database connection closed.\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/archive_cdr.log b/archive_cdr.log
+--- a/archive_cdr.log	(revision 9da1cb528efa9fbb758dcd57e1e461a3a0381a60)
++++ b/archive_cdr.log	(date 1723617777325)
+@@ -70,3 +70,19 @@
+ 2024-08-13 23:49:33,673 INFO:Database connection closed.
+ 2024-08-13 23:51:33,813 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'
+ 2024-08-13 23:51:33,813 INFO:Database connection closed.
++2024-08-14 16:42:56,677 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913203'
++2024-08-14 16:42:56,677 INFO:Database connection closed.
++2024-08-14 16:42:56,760 INFO:Executed query: SELECT `dn_number` AS `number` FROM `dnis` WHERE `dn_flushCdr` = 'Y'
++2024-08-14 16:42:56,760 INFO:Database connection closed.
++2024-08-14 16:42:56,785 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913200'
++2024-08-14 16:42:56,785 INFO:Database connection closed.
++2024-08-14 16:42:56,957 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913200'
++2024-08-14 16:42:56,958 INFO:Database connection closed.
++2024-08-14 16:42:56,969 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-0291913201'
++2024-08-14 16:42:56,969 INFO:Database connection closed.
++2024-08-14 16:42:57,142 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913201'
++2024-08-14 16:42:57,142 INFO:Database connection closed.
++2024-08-14 16:42:57,153 INFO:Executed query: SELECT `Number` AS `bnum` FROM `inbound` WHERE `Terminating_No` = '+61-1300989659'
++2024-08-14 16:42:57,153 INFO:Database connection closed.
++2024-08-14 16:42:57,325 INFO:Executed query: update dnis set dn_flushCdr = 'N' where dn_number = '+61-0291913204'
++2024-08-14 16:42:57,325 INFO:Database connection closed.
